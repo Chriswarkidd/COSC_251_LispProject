@@ -69,12 +69,16 @@
 
 ; set up the initial board that starts with the correct number of alive tiles randomly placed
 (defun init_board()
-;(print size)
-(do ((x 0 (+ x 1))) ((> x start_alive) 'done) (setf (nth (random size) (nth (random size) board)) 1)))
+  (loop for i from 0 to start_alive do
+       (let ((x (+ 0 (random size))))
+	 (let ((y (+ 0 (random size))))
+	   (setEleFrom2dList board x y 1))))
+
+
 
 ;function to print out the board based on size
 (defun printBoard()
-(do ((x 0 (+ x 1))) ((> x size) 'done) (format t "~{~a~^ ~}" (nth x board)) (Fresh-line)))
+(do ((x 0 (+ x 1))) ((> x (- size 1)) 'done) (format t "~{~a~^ ~}" (subseq (nth x board) 0 size)) (Fresh-line)))
 
 ;determine number of live neighbors and if it should flip when the cell is alive, return nil if it wasn't fliped
 (defun alive_flip (index1 index2) 
@@ -122,11 +126,12 @@
   (flip_things listy)
   (if (> count 0) nil count)))
 
-(defun flip_things (listy) (loop for n in listy do 
-  (if (n) 
-    (if (< 1 (getEleFrom2dList board (nth 0 n) (nth 1 n))) 
-    (setEleFrom2dList board (nth 0 n) (nth 1 n) 0) 
-    (setEleFrom2dList board (nth 0 n) (nth 1 n) 1)))))
+(defun flip_things (listy)
+ (loop for n in listy do
+      (if n
+	  (if (< 1 (getEleFrom2dList board (nth 0 n) (nth 1 n))) 
+	      (setEleFrom2dList board (nth 0 n) (nth 1 n) 0) 
+	      (setEleFrom2dList board (nth 0 n) (nth 1 n) 1)))))
 
 ;setup function for getting variables that the game will use
 (defun getVars()
