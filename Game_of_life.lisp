@@ -66,16 +66,15 @@
   (let (( g (getEleFrom2dList board index1 index2)))
   (if (= g 0) nil)))
 
+
 ; set up the initial board that starts with the correct number of alive tiles randomly placed
 (defun init_board()
-    ;(print size)
-    (do ((x 0 (+ x 1))) ((> x (- start_alive 1) 'done) (setf (nth (random size) (nth (random size) board)) 1))))
+;(print size)
+(do ((x 0 (+ x 1))) ((> x start_alive) 'done) (setf (nth (random size) (nth (random size) board)) 1)))
 
 ;function to print out the board based on size
 (defun printBoard()
-(do ((x 0 (+ x 1))) ((> x size) 'done) (format t "~{~a~^ ~}" (nth x board)) (Fresh-line))
-)
-
+(do ((x 0 (+ x 1))) ((> x size) 'done) (format t "~{~a~^ ~}" (nth x board)) (Fresh-line)))
 
 ;determine number of live neighbors and if it should flip when the cell is alive, return nil if it wasn't fliped
 (defun alive_flip (index1 index2) 
@@ -111,9 +110,6 @@
        do(if (= n num_alive)
 	     (return-from dead_flip num_alive)
 	     nil))))
-
-
-
 
 ;function for testing if the board has stabilized, returns nil if the board changed at all. if the board hasn't changed it returns the value of count
 (defun is_stable()
@@ -153,23 +149,8 @@
     (princ "Enter number of live tiles to begin with: ")
     (setq start_alive (parse-integer(read-line)))
     
-      ;get new number of live tile to start with is it is greater than the amount of tiles on the board
-    (if (> start_alive (* size size)) (getValidTiles))
-    
-
-    ;used temperarily to see the inputs
-    (princ "these are what you input: ")
-    (FRESH-LINE)
-    (write size)
-    (FRESH-LINE)
-    (write stay_alive)
-    (FRESH-LINE)
-    (write come_alive)
-    (FRESH-LINE)
-    (write dis_neigh)
-    (FRESH-LINE)
-    (write start_alive)
-    (FRESH-LINE))
+    ;get new number of live tile to start with is it is greater than the amount of tiles on the board
+    (if (> start_alive (* size size)) (getValidTiles)))
     
     
 ;setup function for setting up the game board.
@@ -206,7 +187,3 @@
 	       (FRESH-LINE)
 	       (princ "Press enter to continue: ")
 	       (read-line))))))
-
-
-
-
