@@ -106,7 +106,7 @@
 	  (if (is_alive index1 (- index2 i))
 	      (incf num_alive)))
       (if (<= (+ index2 i) (- size 1))
-	  (if (is_alive (- index1 i) (+ index2 i))
+	  (if (is_alive index1 (+ index2 i))
 	      (incf num_alive))))
  num_alive))
 
