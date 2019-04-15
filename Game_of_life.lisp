@@ -69,10 +69,13 @@
 
 ; set up the initial board that starts with the correct number of alive tiles randomly placed
 (defun init_board()
-  (loop for i from 0 to start_alive do
+  (loop for i from 1 to start_alive  do
        (let ((x (+ 0 (random size))))
 	 (let ((y (+ 0 (random size))))
-	   (setEleFrom2dList board x y 1))))
+	  (loop while (= (getEleFrom2dList board x y) 1) do
+	       (setq x (+ 0 (random size)))
+	       (setq y (+ 0 (random size))))
+	  (setEleFrom2dList board x y 1)))))
 
 
 
@@ -115,23 +118,30 @@
 	     (return-from dead_flip num_alive)
 	     nil))))
 
-;function for testing if the board has stabilized, returns nil if the board changed at all. if the board hasn't changed it returns the value of count
-(defun is_stable()
- (let ((count 0) (listy (list (list ))) )
-  (loop for i from 0 to (- size 1)
-        for j from 0 to (- size 1)
-        do (if (is_alive i j) (if (alive_flip i j) 
-        (progn (incf count) (append listy (list (list i j)))) (nil))
-		(if (dead_flip i j) (progn (incf count) (append listy (list (list i j)))) (nil))))
-  (flip_things listy)
-  (if (> count 0) nil count)))
-
+         
+;flip what needs to flip
 (defun flip_things (listy)
  (loop for n in listy do
       (if n
 	  (if (< 1 (getEleFrom2dList board (nth 0 n) (nth 1 n))) 
 	      (setEleFrom2dList board (nth 0 n) (nth 1 n) 0) 
 	      (setEleFrom2dList board (nth 0 n) (nth 1 n) 1)))))
+ 
+;function for testing if the board has stabilized, returns nil if the board changed at all. if the board hasn't changed it returns the value of count
+(defun is_stable()
+ (let ((count 0))
+   (let ((listy (list (list ))))
+     (loop for i from 0 to (- size 1)
+        for j from 0 to (- size 1)
+        do (if (is_alive i j) (if (alive_flip i j) 
+        (progn (incf count) (append listy (list (list i j)))) nil)
+		(if (dead_flip i j) (progn (incf count) (append listy (list (list i j)))) nil)))
+     (flip_things listy))
+  (if (> count 0) nil count)))
+
+
+
+
 
 ;setup function for getting variables that the game will use
 (defun getVars()
