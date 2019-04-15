@@ -113,14 +113,20 @@
 
 ;function for testing if the board has stabilized, returns nil if the board changed at all. if the board hasn't changed it returns the value of count
 (defun is_stable()
- (let ((count 0))
+ (let ((count 0) (listy (list (list ))) )
   (loop for i from 0 to (- size 1)
         for j from 0 to (- size 1)
-        do (if (is_alive i j) (if (alive_flip i j) (incf count) (nil))
-		(if (dead_flip i j) (incf count) (nil))))
+        do (if (is_alive i j) (if (alive_flip i j) 
+        (progn (incf count) (append listy (list (list i j)))) (nil))
+		(if (dead_flip i j) (progn (incf count) (append listy (list (list i j)))) (nil))))
+  (flip_things listy)
   (if (> count 0) nil count)))
 
-            
+(defun flip_things (listy) (loop for n in listy do 
+  (if (n) 
+    (if (< 1 (getEleFrom2dList board (nth 0 n) (nth 1 n))) 
+    (setEleFrom2dList board (nth 0 n) (nth 1 n) 0) 
+    (setEleFrom2dList board (nth 0 n) (nth 1 n) 1)))))
 
 ;setup function for getting variables that the game will use
 (defun getVars()
