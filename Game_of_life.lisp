@@ -64,7 +64,7 @@
 ;Check if a tile is alive. Returns true or false
 (defun is_alive (index1 index2)
   (let (( g (getEleFrom2dList board index1 index2)))
-  (if (= g 0) nil)))
+  (if (= g 0) nil 1)))
 
 
 ; set up the initial board that starts with the correct number of alive tiles randomly placed
@@ -83,7 +83,7 @@
 (defun printBoard()
 (do ((x 0 (+ x 1))) ((> x (- size 1)) 'done) (format t "~{~a~^ ~}" (subseq (nth x board) 0 size)) (Fresh-line)))
 
-;determine number of live neighbors and if it should flip when the cell is alive, return nil if it wasn't fliped
+;determine number of live neighbors and if it should flip when the cell is alive, return nil if it shouldn't fliped
 (defun alive_flip (index1 index2) 
   (let ((num_alive (alive_around index1 index2)))
     (loop for n in stay_alive 
@@ -131,11 +131,22 @@
 (defun is_stable()
  (let ((count 0))
    (let ((listy (list (list ))))
-     (loop for i from 0 to (- size 1)
-        for j from 0 to (- size 1)
-        do (if (is_alive i j) (if (alive_flip i j) 
-        (progn (incf count) (append listy (list (list i j)))) nil)
-		(if (dead_flip i j) (progn (incf count) (append listy (list (list i j)))) nil)))
+     (loop for i from 0 to (- size 1) do
+	(loop for j from 0 to (- size 1) do 
+	     (if (is_alive i j)
+		 (if (alive_flip i j)
+		     (progn
+		       (incf count)
+		       (print count)
+		       (append listy (list (list i j))))
+		     nil)
+		 (progn
+		   (if (dead_flip i j)
+		       (progn
+			 (incf count)
+			 (print count)
+			 (append listy (list (list i j))))
+		       nil)))))
      (flip_things listy))
   (if (> count 0) nil count)))
 
