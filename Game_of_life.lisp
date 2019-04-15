@@ -7,6 +7,7 @@
 ;https://www.gnu.org/software/emacs/manual/html_node/eintr/Sample-let-Expression.html#Sample-let-Expression
 ;https://www.gnu.org/software/emacs/manual/html_node/elisp/nil-and-t.html
 ;https://batsov.com/articles/2011/04/30/parsing-numbers-from-string-in-lisp/
+;https://www.reddit.com/r/lisp/comments/a2qnz8/list_without_parentheses/
 
 
 ;define variables for game rules
@@ -65,15 +66,16 @@
   (let (( g (getEleFrom2dList board index1 index2)))
   (if (= g 0) nil)))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;Functions that need to be made;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
-
 ; set up the initial board that starts with the correct number of alive tiles randomly placed
-(defun init_board())
+(defun init_board()
+    ;(print size)
+    (do ((x 0 (+ x 1))) ((> x (- start_alive 1) 'done) (setf (nth (random size) (nth (random size) board)) 1))))
 
 ;function to print out the board based on size
-(defun printBoard())
+(defun printBoard()
+(do ((x 0 (+ x 1))) ((> x size) 'done) (format t "~{~a~^ ~}" (nth x board)) (Fresh-line))
+)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;determine number of live neighbors and if it should flip when the cell is alive, return nil if it wasn't fliped
 (defun alive_flip (index1 index2) 
@@ -151,7 +153,7 @@
     (princ "Enter number of live tiles to begin with: ")
     (setq start_alive (parse-integer(read-line)))
     
-    ;get new number of live tile to start with is it is greater than the amount of tiles on the board
+      ;get new number of live tile to start with is it is greater than the amount of tiles on the board
     (if (> start_alive (* size size)) (getValidTiles))
     
 
@@ -166,7 +168,8 @@
     (FRESH-LINE)
     (write dis_neigh)
     (FRESH-LINE)
-    (write start_alive))
+    (write start_alive)
+    (FRESH-LINE))
     
     
 ;setup function for setting up the game board.
@@ -203,10 +206,6 @@
 	       (FRESH-LINE)
 	       (princ "Press enter to continue: ")
 	       (read-line))))))
-
-	  
-    
-
 
 
 
