@@ -63,6 +63,7 @@
 
 ;Check if a tile is alive. Returns true or false
 (defun is_alive (index1 index2)
+  (print (list index1 index2))
   (let (( g (getEleFrom2dList board index1 index2)))
   (if (= g 0) nil 1)))
 
@@ -94,8 +95,9 @@
 ;This function checks around the cell in question in the rage specified and counts the
 ;number of neighbors which are alive.
 (defun alive_around (index1 index2) 
+ (print (list index1 index2 "list alive around"))
  (let ((num_alive 0)) 
- (loop for i from 0 to (- dis_neigh 1)
+ (loop for i from 1 to dis_neigh
     do (if (>= (- index1 i) 0)
 	(if (is_alive (- index1 i) index2)
 	    (incf num_alive)))
@@ -107,8 +109,8 @@
 	      (incf num_alive)))
       (if (<= (+ index2 i) (- size 1))
 	  (if (is_alive index1 (+ index2 i))
-	      (incf num_alive))))
- (print num_alive)
+	      (incf num_alive))) (print (list i "counter")) )
+ (print (list num_alive "Num_alive"))
  num_alive))
 
 ;determine number of live neighbors and if it should flip when the cell is dead, return nil if it wasn't fliped
@@ -122,6 +124,7 @@
          
 ;flip what needs to flip
 (defun flip_things (listy)
+(print listy)
  (loop for n in listy do
       (if n
 	  (if (< 1 (getEleFrom2dList board (nth 0 n) (nth 1 n))) 
@@ -138,16 +141,17 @@
 		 (if (alive_flip i j)
 		     (progn
 		       (incf count)
-		       (print count)
+		       (print (list count "stable count"))
 		       (append listy (list (list i j))))
 		     nil)
 		 (progn
 		   (if (dead_flip i j)
 		       (progn
 			 (incf count)
-			 (print count)
+       (print (list count "stable count"))
 			 (append listy (list (list i j))))
 		       nil)))))
+      (print (list listy "list of indices to flip"))
      (flip_things listy))
   (if (> count 0) nil count)))
 
