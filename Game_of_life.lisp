@@ -4,8 +4,10 @@
 ;Project Decription:
 ;This is the game of life programmed in lisp. it asks for input on board size, how many neighbors a tile needs to stay alive or become alive, 
 ;the neighbor rule and how many live tiles to start with. The initial state of the board has the number of starting live tiles randomly placed
-;on the board. to see the next time in the game, press enter.
+;on the board. To see the next board state in the game, press enter.
 ; To play the game, you must type (run_game). 
+; if you want to play again after the board has stablized, simply enter (run_game)
+; again.
 ;Resources:
 ;https://www.tutorialspoint.com/lisp/lisp_input_output.htm
 ;http://sandbox.mc.edu/~bennet/cs231/examples/loops.html
@@ -72,7 +74,8 @@
   (if (= g 0) nil 1)))
 
 
-; set up the initial board that starts with the correct number of alive tiles randomly placed
+;init_board sets up the initial board 
+;with the correct number of alive tiles randomly placed
 (defun init_board()
   (loop for i from 1 to start_alive  do
        (let ((x (+ 0 (random size))))
@@ -84,11 +87,13 @@
 
 
 
-;function to print out the board based on size
+;printBoard prints out the board based on size
 (defun printBoard()
 (do ((x 0 (+ x 1))) ((> x (- size 1)) 'done) (format t "~{~a~^ ~}" (subseq (nth x board) 0 size)) (Fresh-line)))
 
-;determine number of live neighbors and if it should flip when the cell is alive, return nil if it shouldn't fliped
+;alive_flip determines the number of live neighbors and 
+;if it should flip when the cell is alive. 
+;returns nil if it shouldn't be flipped.
 (defun alive_flip (index1 index2) 
   (let ((num_alive (alive_around index1 index2)))
     (let ((count 0))
@@ -96,7 +101,8 @@
 	   (if (= num_alive n) (incf count) nil))
       (if (> count 0) nil count))))
 
-;This function checks around the cell in question in the rage specified and counts the
+;alive_around checks the cells around the cell given to it 
+;in the range specified and returns the
 ;number of neighbors which are alive.
 (defun alive_around (index1 index2)
  (let ((num_alive 0)) 
@@ -115,7 +121,9 @@
 	      (incf num_alive))))
  num_alive))
 
-;determine number of live neighbors and if it should flip when the cell is dead, return nil if it wasn't fliped
+;dead_flip determines the number of live neighbors of the given cell
+;and if it should flip when the cell is dead. 
+;returns nil if it shouldn't be flipped.
 (defun dead_flip (index1 index2)
   (let ((num_alive (alive_around index1 index2)))
     (loop for n in come_alive
@@ -124,7 +132,8 @@
 	     nil))))
 
          
-;flip what needs to flip
+;flip_things takes in a list of cells which should be fliped
+;and flips them.
 (defun flip_things (listy)
  (loop for n in listy do
       (if n
@@ -132,7 +141,9 @@
 		(setEleFrom2dList board (nth 0 n) (nth 1 n) 1)
 		(setEleFrom2dList board (nth 0 n) (nth 1 n) 0)))))
  
-;function for testing if the board has stabilized, returns nil if the board changed at all. if the board hasn't changed it returns the value of count
+;is_stable tests if the board has stabilized. 
+;returns nil if the board changed at all. 
+;if the board hasn't changed it returns the value of count
 (defun is_stable()
  (let ((count 0))
    (let ((listy (list (list ))))
@@ -154,7 +165,7 @@
   (if (> count 0) nil count)))
 
 
-;reset the board back to all zeros
+;reset_board resets the board back to all zeros
 (defun reset_board()
   (loop for i from 0 to 19 do
        (loop for j from 0 to 19 do
@@ -208,7 +219,7 @@
     (princ "Press enter to continue:")
     (read-line))
 
-;run the overall game
+;run_game runs the overall game.
 (defun run_game()
   (reset_board)
   (setup)
