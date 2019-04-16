@@ -89,10 +89,10 @@
 ;determine number of live neighbors and if it should flip when the cell is alive, return nil if it shouldn't fliped
 (defun alive_flip (index1 index2) 
   (let ((num_alive (alive_around index1 index2)))
-    (loop for n in stay_alive 
-      do(if (= n num_alive)
-	    nil
-	    (return-from alive_flip num_alive)))))
+    (let ((count 0))
+      (loop for n in stay_alive do
+	   (if (= num_alive n) (incf count) nil))
+      (if (> count 0) nil count))))
 
 ;This function checks around the cell in question in the rage specified and counts the
 ;number of neighbors which are alive.
