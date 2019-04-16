@@ -142,14 +142,14 @@
 		     (progn
 		       (incf count)
 		       (print (list count "stable count"))
-		       (append listy (list (list i j))))
+		        (setf listy (append listy (list (list i j)))))
 		     nil)
 		 (progn
 		   (if (dead_flip i j)
 		       (progn
 			 (incf count)
        (print (list count "stable count"))
-			 (append listy (list (list i j))))
+			 (setf listy (append listy (list (list i j)))))
 		       nil)))))
       (print (list listy "list of indices to flip"))
      (flip_things listy))
