@@ -2,9 +2,11 @@
 ;4/11/2019
 ;COSC 251 project 4
 ;Project Decription:
-;
+;This is the game of life programmed in lisp. it asks for input on board size, how many neighbors a tile needs to stay alive or become alive, 
+;the neighbor rule and how many live tiles to start with. The initial state of the board has the number of starting live tiles randomly placed
+;on the board. to see the next time in the game, press enter.
 ; To play the game, you must type (run_game). 
-;resources:
+;Resources:
 ;https://www.tutorialspoint.com/lisp/lisp_input_output.htm
 ;http://sandbox.mc.edu/~bennet/cs231/examples/loops.html
 ;https://www.gnu.org/software/emacs/manual/html_node/eintr/Sample-let-Expression.html#Sample-let-Expression
