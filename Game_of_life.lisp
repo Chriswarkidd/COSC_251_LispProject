@@ -1,6 +1,9 @@
 ;Zoe Lambert,Christopher Brown, Nick True
 ;4/11/2019
 ;COSC 251 project 4
+;Project Decription:
+;
+; To play the game, you must type (run_game). 
 ;resources:
 ;https://www.tutorialspoint.com/lisp/lisp_input_output.htm
 ;http://sandbox.mc.edu/~bennet/cs231/examples/loops.html
@@ -121,12 +124,11 @@
          
 ;flip what needs to flip
 (defun flip_things (listy)
-(print listy)
  (loop for n in listy do
       (if n
-	  (if (< 1 (getEleFrom2dList board (nth 0 n) (nth 1 n)))
-	      (setEleFrom2dList board (nth 0 n) (nth 1 n) 0)
-	      (setEleFrom2dList board (nth 0 n) (nth 1 n) 1)))))
+	  (if (> 1 (getEleFrom2dList board (nth 0 n) (nth 1 n)))
+		(setEleFrom2dList board (nth 0 n) (nth 1 n) 1)
+		(setEleFrom2dList board (nth 0 n) (nth 1 n) 0)))))
  
 ;function for testing if the board has stabilized, returns nil if the board changed at all. if the board hasn't changed it returns the value of count
 (defun is_stable()
@@ -146,7 +148,6 @@
 			 (incf count)
 			 (setf listy (append listy (list (list i j)))))
 		       nil)))))
-      (print (list listy "list of indices to flip"))
      (flip_things listy))
   (if (> count 0) nil count)))
 
