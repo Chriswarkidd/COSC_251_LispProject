@@ -156,7 +156,11 @@
   (if (> count 0) nil count)))
 
 
-
+;reset the board back to all zeros
+(defun reset_board()
+  (loop for i from 0 to 19 do
+       (loop for j from 0 to 19 do
+	    (if (= (getEleFrom2dList board i j) 1) (setEleFrom2dList board i j 0)))))
 
 
 ;setup function for getting variables that the game will use
@@ -208,6 +212,7 @@
 
 ;run the overall game
 (defun run_game()
+  (reset_board)
   (setup)
   (let ((flag 0))
     (loop while (= flag 0) do 
