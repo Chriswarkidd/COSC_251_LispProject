@@ -108,6 +108,7 @@
       (if (<= (+ index2 i) (- size 1))
 	  (if (is_alive index1 (+ index2 i))
 	      (incf num_alive))))
+ (print num_alive)
  num_alive))
 
 ;determine number of live neighbors and if it should flip when the cell is dead, return nil if it wasn't fliped
